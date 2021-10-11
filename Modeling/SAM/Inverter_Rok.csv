@@ -1,0 +1,13 @@
+inv_ds_mppt_hi,1000,Maximum MPPT DC voltage
+inv_ds_idcmax,50,Maximum DC current
+inv_ds_pnt,0.01375,Power consumption at night
+inv_ds_eff_type,1,Use weighted or manufacturer efficiency
+inv_ds_vdcmax,1100,Maximum DC voltage
+inv_ds_ac_voltage,73,Nominal AC voltage
+inv_ds_eff_peak_or_nom,98.6,Manufacturer efficiency
+inv_ds_eff_weighted,96,Weighted efficiency
+inv_ds_mppt_low,200,Minimum MPPT DC voltage
+inv_ds_num_mppt,2,Number of MPPT inputs
+inv_ds_paco,55,Maximum AC output power
+inv_ds_pso,0.44,Power consumption during operation
+inv_ds_vdco,250,Nominal DC voltage
