@@ -35,11 +35,20 @@ bifacialvf.__version__
 
 print(br.__version__)
 print(pvlib.__version__)
+#2021 run: 0.3.4+275.ga152a2e.dirty bifacial_radiance
+#2021 run: '0.1.7-dev1+33.gf02e57a' bifacialVf
+
+
+# In[4]:
+
+
+from datetime import date
+date.today()
 
 
 # # S1
 
-# In[ ]:
+# In[5]:
 
 
 TMYtoread='../TMY3_Albuquerque_NM.csv'
@@ -89,7 +98,7 @@ bifacialvf.simulate(myTMY3, meta, writefiletitle=writefiletitle,
 
 # # S3
 
-# In[ ]:
+# In[6]:
 
 
 TMYtoread='../TMY3_Roskilde_DK.csv'
@@ -137,7 +146,7 @@ bifacialvf.simulate(myTMY3, meta, writefiletitle=writefiletitle,
 
 # # S4
 
-# In[ ]:
+# In[7]:
 
 
 TMYtoread='../TMY3_Roskilde_DK.csv'
@@ -185,7 +194,7 @@ bifacialvf.simulate(myTMY3, meta, writefiletitle=writefiletitle,
 
 # # S5
 
-# In[ ]:
+# In[8]:
 
 
 TMYtoread='../TMY3_Roskilde_DK.csv'
@@ -233,7 +242,7 @@ bifacialvf.simulate(myTMY3, meta, writefiletitle=writefiletitle,
 
 # # S6
 
-# In[ ]:
+# In[9]:
 
 
 TMYtoread='../TMY3_Roskilde_DK.csv'
@@ -281,7 +290,7 @@ bifacialvf.simulate(myTMY3, meta, writefiletitle=writefiletitle,
 
 # # Compile Results for Front and Rear Irradiance Averages
 
-# In[4]:
+# In[10]:
 
 
 def mad_fn(data):
@@ -328,11 +337,12 @@ def vf_LoadAdd(bifacialvf_resultsfile, bifaciality=0.65):
     return df, meta
 
 
-# In[114]:
+# In[11]:
 
 
 # Load
 (bvf1, metadata_bvf1) = vf_LoadAdd('bifacialVF_S1.csv')
+#(bvf2, metadata_bvf2) = vf_LoadAdd('bifacialVF_S2.csv')
 (bvf3, metadata_bvf3) = vf_LoadAdd('bifacialVF_S3.csv')
 (bvf4, metadata_bvf4) = vf_LoadAdd('bifacialVF_S4.csv')
 (bvf5, metadata_bvf5) = vf_LoadAdd('bifacialVF_S5.csv')
@@ -341,7 +351,7 @@ def vf_LoadAdd(bifacialvf_resultsfile, bifaciality=0.65):
 
 # #### Bringing the METEO data to align data with original hours, because bifacialVF only reports back non-zero rows
 
-# In[115]:
+# In[12]:
 
 
 rsk = pd.read_excel('..\..\Roskilde_DK_meteo.xlsx', skiprows=2)
@@ -354,25 +364,7 @@ rsk=rsk.tz_localize('ETC/GMT-1')
 rsk['RSK_Timestamp'] = realtimestamps.values
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[116]:
+# In[13]:
 
 
 abq = pd.read_excel('..\..\Albuquerque_NM_meteo.xlsx', skiprows=2)
@@ -384,29 +376,17 @@ abq=abq.tz_localize('ETC/GMT+7')
 abq['ABQ_Timestamp'] = abq.index
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[117]:
+# In[14]:
 
 
 bvf1 = pd.concat([abq, bvf1], axis=1)
 bvf3 = pd.concat([rsk, bvf3], axis=1)
-bvf4 = pd.concat([rsk, bvf3], axis=1)
-bvf5 = pd.concat([rsk, bvf3], axis=1)
-bvf6 = pd.concat([rsk, bvf3], axis=1)
+bvf4 = pd.concat([rsk, bvf4], axis=1)
+bvf5 = pd.concat([rsk, bvf5], axis=1)
+bvf6 = pd.concat([rsk, bvf6], axis=1)
 
 
-# In[118]:
+# In[15]:
 
 
 # Checking Alignment
@@ -414,7 +394,7 @@ print('weather file', bvf1['DNI (W/m2)'][10])
 print('results', bvf1['DNI'][10])
 
 
-# In[119]:
+# In[16]:
 
 
 # Reseting index so we can do one single DF with all results
@@ -430,38 +410,44 @@ bvf6 = bvf6.reset_index(drop=True)
 
 # ### Saving one dataframe with desired results to report
 
-# In[120]:
+# In[17]:
 
 
 df=pd.DataFrame()
 
 
-# In[121]:
+# In[18]:
 
 
 bifacialityfactor = 0.65
 
 
-# In[122]:
+# In[19]:
 
 
 bvf1.keys()
 
 
-# In[123]:
+# In[21]:
+
+
+bvf3.keys()
+
+
+# In[23]:
 
 
 df['ABQ_Timestamp'] = bvf1['ABQ_Timestamp']
 df['ABQ_DNI'] = bvf1['DNI']
 df['ABQ_TEMP'] = bvf1['Ambient Temp (°C) ']
-df['ABQ_WSPD'] = bvf1['Wind Speed (m/s)']
+df['ABQ_WSPD'] = bvf1['VWind']# Wind Speed (m/s)']
 df['S1_Gfront'] = bvf1['Gfront']
 df['S2_Gfront'] = bvf1['Gfront']
 
 df['RSK_Timestamp'] = bvf3['RSK_Timestamp']
 df['RSK_DNI'] = bvf3['DNI']
 df['RSK_TEMP'] = bvf3['Ambient Temp (°C) ']
-df['RSK_WSPD'] = bvf3['Wind Speed (m/s)']
+df['RSK_WSPD'] = bvf3['VWind'] # Wind Speed (m/s)']
 df['S3_Gfront'] = bvf3['Gfront']
 df['S4_Gfront'] = bvf4['Gfront']
 df['S4_Grear'] = bvf4['Grear']
@@ -486,26 +472,27 @@ df['S6_GPOAeff'] = df['S6_Gfront'] + df['S6_Grear']*bifacialityfactor
 # </div>
 # 
 
-# In[15]:
+# In[76]:
 
 
 #url = 'https://raw.githubusercontent.com/NREL/SAM/master/deploy/libraries/CEC%20Modules.csv'
 #url = 'https://raw.githubusercontent.com/NREL/SAM/develop/deploy/libraries/CEC%20Modules.csv'
-url = 'https://raw.githubusercontent.com/NREL/SAM/patch/deploy/libraries/CEC%20Modules.csv'
-db = pd.read_csv(url, index_col=0)
+#url = 'https://raw.githubusercontent.com/NREL/SAM/patch/deploy/libraries/CEC%20Modules.csv'
+#db = pd.read_csv(url, index_col=0)
+db = pvlib.pvsystem.retrieve_sam(name='CECMod').T
 
 modfilter1 = db.index.str.startswith('SANYO') & db.index.str.endswith('VBHN325SA16')
-modfilter2 = db.index.str.startswith('Canadian') & db.index.str.endswith('CS6K-275M')
-modfilter35 = db.index.str.startswith('Trina') & db.index.str.contains('305DD05A.05')
+modfilter2 = db.index.str.startswith('Canadian') & db.index.str.endswith('CS6K_275M')
+modfilter35 = db.index.str.startswith('Trina') & db.index.str.contains('305DD05A_05_')
 modfilter46 = db.index.str.startswith('Trina') & db.index.str.contains('295DEG5C')
 
 mymod1 = db[modfilter1]
 mymod2 = db[modfilter2]
-mymod35 = db[modfilter35].iloc[0]
+mymod35 = db[modfilter35]
 mymod46 = db[modfilter46]
 
 
-# In[16]:
+# In[78]:
 
 
 from pvlib.temperature import TEMPERATURE_MODEL_PARAMETERS
@@ -513,7 +500,7 @@ tpm1235 = ( TEMPERATURE_MODEL_PARAMETERS['sapm']['open_rack_glass_polymer']) # t
 tpm46 = ( TEMPERATURE_MODEL_PARAMETERS['sapm']['open_rack_glass_glass']) # temperature_model_parameters
 
 
-# In[124]:
+# In[79]:
 
 
 df['S1_celltemp'] = pvlib.temperature.sapm_cell(df.S1_Gfront, df.ABQ_TEMP, df.ABQ_WSPD, tpm1235['a'], tpm1235['b'], tpm1235['deltaT'])
@@ -524,7 +511,7 @@ df['S5_celltemp'] = pvlib.temperature.sapm_cell(df.S5_Gfront, df.RSK_TEMP, df.RS
 df['S6_celltemp'] = pvlib.temperature.sapm_cell(df.S6_GPOAeff, df.RSK_TEMP, df.RSK_WSPD, tpm46['a'], tpm46['b'], tpm46['deltaT'])
 
 
-# In[125]:
+# In[80]:
 
 
 def calculatePerformance(effective_irradiance, temp_cell, CECMod):
@@ -568,7 +555,7 @@ def calculatePerformance(effective_irradiance, temp_cell, CECMod):
     return IVcurve_info['p_mp']
 
 
-# In[126]:
+# In[82]:
 
 
 df['S1_dcP'] = calculatePerformance(df.S1_Gfront, df.S2_celltemp, mymod2)
@@ -579,7 +566,7 @@ df['S5_dcP'] = calculatePerformance(df.S5_Gfront, df.S5_celltemp, mymod35)
 df['S6_dcP'] = calculatePerformance(df.S6_GPOAeff, df.S6_celltemp, mymod46)
 
 
-# In[127]:
+# In[83]:
 
 
 df['S1_dcP'] = df['S1_dcP']*12
@@ -590,19 +577,19 @@ df['S5_dcP'] = df['S5_dcP']*88
 df['S6_dcP'] = df['S6_dcP']*88*(1-0.021)  # Yearly Front and Rear Mismatch Loss
 
 
-# In[128]:
+# In[84]:
 
 
 df = df.reindex(columns=sorted(df.columns)).fillna(0)
 
 
-# In[129]:
+# In[85]:
 
 
 df.to_csv('bifacialVFresults.csv')
 
 
-# In[130]:
+# In[86]:
 
 
 df.head(12)

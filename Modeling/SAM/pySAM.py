@@ -225,7 +225,7 @@ def setNewValues(dic):
     return newval
 
 
-# In[49]:
+# In[5]:
 
 
 def runAndCompileSAMResults(SimFile, yy, metdataABQorDK='ABQ', bifacial=False, includeMeteo = False):
@@ -302,7 +302,7 @@ def runAndCompileSAMResults(SimFile, yy, metdataABQorDK='ABQ', bifacial=False, i
     return df, losses
 
 
-# In[9]:
+# In[6]:
 
 
 # Prism File
@@ -314,18 +314,18 @@ S5file = "JSONS_SAM\S5.json"
 S6file = "JSONS_SAM\S6.json"
 
 
-# In[50]:
+# In[7]:
 
 
-resS1, losses1 = runAndCompileSAMResults (S1file, 2, 'DK', False, True)
-resS2, losses2  = runAndCompileSAMResults (S2file, 3, 'DK', False, False)
+resS1, losses1 = runAndCompileSAMResults (S1file, 1, 'ABQ', False, True)  # Had a 2 from 2021.. why
+resS2, losses2  = runAndCompileSAMResults (S2file, 1, 'ABQ', False, False) # had a 2 from 2021, why
 resS3, losses3  = runAndCompileSAMResults (S3file, 1, 'DK', False, True)
 resS4, losses4  = runAndCompileSAMResults (S4file, 1, 'DK', True, False)
 resS5, losses5  = runAndCompileSAMResults (S5file, 1, 'DK', False, False)
 resS6, losses6  = runAndCompileSAMResults (S6file, 1, 'DK', True, False)
 
 
-# In[51]:
+# In[8]:
 
 
 resS1 = resS1.reset_index().add_prefix('S1_')
@@ -336,19 +336,19 @@ resS5 = resS5.reset_index().add_prefix('S5_')
 resS6 = resS6.reset_index().add_prefix('S6_')
 
 
-# In[63]:
+# In[9]:
 
 
 result = pd.concat([resS1, resS2, resS3, resS4, resS5, resS6], axis=1)
 
 
-# In[64]:
+# In[10]:
 
 
 result.to_csv('SAM Results Compiled.csv')
 
 
-# In[60]:
+# In[11]:
 
 
 losses = pd.DataFrame([losses1, losses2,losses3, losses4, losses5, losses6], index=['S1', 'S2', 'S3', 'S4', 'S5', 'S6'])
