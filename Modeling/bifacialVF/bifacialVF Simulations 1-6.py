@@ -379,6 +379,8 @@ abq['ABQ_Timestamp'] = abq.index
 # In[14]:
 
 
+# There was an error loading the data here on the 2021 results version; I kept loading bvf3 instead of 4,5,6.. so all the performance data is incorrect for 4-6.
+# This is now the fixed version
 bvf1 = pd.concat([abq, bvf1], axis=1)
 bvf3 = pd.concat([rsk, bvf3], axis=1)
 bvf4 = pd.concat([rsk, bvf4], axis=1)
